@@ -1,0 +1,2605 @@
+/* ==================================================
+   RESET
+================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ==================================================
+   TRANSISI ANTAR HALAMAN
+================================================== */
+
+.page-shell {
+  width: 100%;
+  height: 100%;
+}
+
+.page-shell.entering {
+  animation: pg-enter 0.55s ease both;
+}
+
+.page-shell.leaving {
+  animation: pg-leave 0.32s ease forwards;
+
+  pointer-events: none;
+}
+
+@keyframes pg-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pg-leave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Muncul naik. Memakai properti "translate" terpisah
+   supaya tidak bentrok dengan transform: translateX(-50%) */
+@keyframes pg-rise {
+  from {
+    opacity: 0;
+    translate: 0 26px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes nav-drop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+
+/* ==================================================
+   HALAMAN 1
+================================================== */
+
+.home {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+}
+
+/* Pembungkus gambar (untuk ganti background di HP) */
+.home picture {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transform-origin: center;
+
+  animation: bg-zoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes bg-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+
+
+/* ==================================================
+   NAVBAR GLOBAL
+   Dipakai di semua halaman (tinggi tetap 54px)
+================================================== */
+
+.navbar {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: linear-gradient(90deg, #d87878 0%, #e08886 100%);
+
+  padding: 0 35px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 2px 10px rgba(120, 50, 50, 0.2);
+
+  z-index: 100;
+
+  animation: nav-drop 0.5s ease both;
+}
+
+
+/* ---------- Nama aplikasi ---------- */
+
+.navbar-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 0;
+
+  border: none;
+  background: none;
+
+  font: inherit;
+  color: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: opacity 0.2s ease;
+}
+
+.navbar-brand:hover {
+  opacity: 0.8;
+}
+
+.navbar-brand:focus-visible,
+.nav-link:focus-visible,
+.navbar-burger:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.navbar-title {
+  display: block;
+
+  margin: 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 20px;
+  line-height: 22px;
+
+  color: #222;
+}
+
+.navbar-subtitle {
+  display: block;
+
+  margin: 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 10px;
+  line-height: 12px;
+
+  color: #555;
+}
+
+
+/* ---------- Menu ---------- */
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.nav-link {
+  border: none;
+  border-radius: 999px;
+
+  background: transparent;
+
+  padding: 8px 18px;
+
+  font-family: Georgia, serif;
+
+  font-size: 13px;
+
+  color: #3b2222;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.32);
+
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  background: #fff;
+
+  color: #b04a5c;
+
+  font-weight: bold;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+
+/* ---------- Tombol menu (layar kecil) ---------- */
+
+.navbar-burger {
+  display: none;
+
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 4px;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0 9px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.28);
+
+  cursor: pointer;
+}
+
+.navbar-burger span {
+  display: block;
+
+  height: 2px;
+
+  border-radius: 2px;
+
+  background: #3b2222;
+
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.navbar-burger.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.navbar-burger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-burger.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+
+/* ==================================================
+   POPUP TENTANG / PANDUAN
+================================================== */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(40, 20, 20, 0.45);
+  backdrop-filter: blur(3px);
+
+  z-index: 300;
+
+  animation: pg-enter 0.25s ease both;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 560px;
+  max-height: 82vh;
+
+  overflow-y: auto;
+
+  padding: 26px 26px 22px;
+
+  border-radius: 22px;
+
+  background: #fff8f6;
+
+  box-shadow: 0 20px 50px rgba(60, 20, 20, 0.35);
+
+  font-family: Georgia, serif;
+
+  color: #222;
+
+  animation: modal-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.modal-card h2 {
+  margin: 0 0 12px 0;
+
+  font-size: 22px;
+}
+
+.modal-text {
+  margin: 0 0 16px 0;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #444;
+}
+
+.modal-dims {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.modal-dim {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 10px 12px;
+
+  border-radius: 14px;
+
+  background: #fff;
+
+  border-left: 4px solid var(--c);
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.modal-dim-key {
+  flex-shrink: 0;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--c);
+
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.modal-dim strong {
+  font-size: 14px;
+}
+
+.modal-dim p {
+  margin: 2px 0 0 0;
+
+  font-size: 12.5px;
+
+  line-height: 1.45;
+
+  color: #555;
+}
+
+.modal-note {
+  margin: 0 0 6px 0;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  color: #7a5a5a;
+}
+
+.modal-steps {
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #333;
+}
+
+.modal-steps li {
+  margin-bottom: 8px;
+}
+
+.modal-scale-title {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  color: #b04a5c;
+}
+
+.modal-scale {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.modal-scale-item {
+  padding: 5px 12px;
+
+  border-radius: 999px;
+
+  background: #f3e3e0;
+
+  font-size: 12px;
+
+  color: #444;
+}
+
+.modal-scale-item b {
+  color: #b04a5c;
+}
+
+.modal-close {
+  display: block;
+
+  margin: 20px 0 0 auto;
+
+  padding: 9px 28px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #d65b7c;
+
+  color: #fff;
+
+  font-family: Georgia, serif;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #c84d6e;
+
+  transform: translateY(-1px);
+}
+
+
+/* ==================================================
+   TOMBOL MULAI - HALAMAN 1
+================================================== */
+
+.start-button {
+  position: absolute;
+
+  left: 27%;
+  top: 72%;
+
+  padding: 14px 45px;
+
+  border: none;
+  border-radius: 30px;
+
+  background-color: #d65b7c;
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  z-index: 101;
+
+  overflow: hidden;
+
+  box-shadow: 0 8px 20px rgba(214, 91, 124, 0.4);
+
+  transition: transform 0.25s ease, background-color 0.25s ease;
+
+  animation:
+    pg-rise 0.7s ease 0.45s both,
+    btn-pulse 2.4s ease-in-out 1.4s infinite;
+}
+
+/* Kilau yang lewat di atas tombol */
+.start-button::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -60%;
+
+  width: 40%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  animation: btn-shine 3.2s ease-in-out 1.6s infinite;
+}
+
+.start-button:hover {
+  background-color: #c84d6e;
+
+  transform: translateY(-3px) scale(1.05);
+}
+
+.start-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes btn-pulse {
+  0%, 100% {
+    box-shadow:
+      0 8px 20px rgba(214, 91, 124, 0.4),
+      0 0 0 0 rgba(214, 91, 124, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 8px 20px rgba(214, 91, 124, 0.4),
+      0 0 0 14px rgba(214, 91, 124, 0);
+  }
+}
+
+@keyframes btn-shine {
+  0% {
+    left: -60%;
+  }
+  45%, 100% {
+    left: 130%;
+  }
+}
+
+
+/* ==================================================
+   HALAMAN 2
+================================================== */
+
+.intro-page {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    to bottom,
+    #eadbd7 0%,
+    #d99a9a 100%
+  );
+
+  background-size: 100% 140%;
+
+  animation: intro-bg 10s ease-in-out infinite alternate;
+}
+
+@keyframes intro-bg {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+
+/* Gelembung di halaman 2 dibuat lebih lembut */
+.intro-page .bubble {
+  opacity: 0.35;
+}
+
+
+/* ==================================================
+   TOMBOL KEMBALI
+================================================== */
+
+.back-button {
+  position: absolute;
+
+  top: 66px;
+  left: 35px;
+
+  width: 68px;
+  height: 21px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 15px;
+
+  background: #7f9290;
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 9px;
+
+  cursor: pointer;
+
+  z-index: 101;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+
+  animation: pg-rise 0.6s ease 0.2s both;
+}
+
+.back-button:hover {
+  opacity: 0.85;
+
+  transform: translateX(-2px);
+}
+
+
+/* ==================================================
+   LOGO
+================================================== */
+
+.logo {
+  position: absolute;
+
+  top: 48px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 105px;
+  height: 105px;
+
+  object-fit: contain;
+
+  z-index: 2;
+
+  filter: drop-shadow(0 8px 14px rgba(120, 50, 50, 0.2));
+
+  animation:
+    logo-pop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both,
+    logo-bob 4.5s ease-in-out 1s infinite;
+}
+
+@keyframes logo-pop {
+  from {
+    opacity: 0;
+    translate: 0 -24px;
+    scale: 0.55;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+@keyframes logo-bob {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+
+
+/* ==================================================
+   JUDUL
+================================================== */
+
+.intro-title {
+  position: absolute;
+
+  top: 145px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  margin: 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 48px;
+  font-weight: bold;
+
+  line-height: 1.1;
+
+  color: #111;
+
+  white-space: nowrap;
+
+  z-index: 2;
+
+  text-shadow: 0 3px 10px rgba(255, 255, 255, 0.45);
+
+  animation: pg-rise 0.8s ease 0.3s both;
+}
+
+
+/* ==================================================
+   TOMBOL SELANJUTNYA
+================================================== */
+
+.next-button {
+  position: absolute;
+
+  top: 215px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 165px;
+  height: 42px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 25px;
+
+  background: #e58c89;
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  z-index: 2;
+
+  box-shadow: 0 6px 16px rgba(229, 140, 137, 0.45);
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+
+  animation:
+    pg-rise 0.7s ease 0.5s both,
+    btn-pulse-soft 2.6s ease-in-out 1.5s infinite;
+}
+
+.next-button:hover {
+  opacity: 0.85;
+
+  transform: translateX(-50%) translateY(-3px) scale(1.04);
+}
+
+.next-button:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+@keyframes btn-pulse-soft {
+  0%, 100% {
+    box-shadow:
+      0 6px 16px rgba(229, 140, 137, 0.45),
+      0 0 0 0 rgba(229, 140, 137, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 6px 16px rgba(229, 140, 137, 0.45),
+      0 0 0 12px rgba(229, 140, 137, 0);
+  }
+}
+
+
+/* ==================================================
+   TIGA LANGKAH
+================================================== */
+
+.steps {
+  position: absolute;
+
+  top: 395px;
+
+  left: 9%;
+  right: 9%;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 55px;
+
+  z-index: 2;
+}
+
+.step {
+  display: flex;
+
+  align-items: flex-start;
+
+  width: 32%;
+
+  min-width: 0;
+
+  transition: transform 0.3s ease;
+
+  animation: pg-rise 0.8s ease both;
+}
+
+.step:nth-child(1) {
+  animation-delay: 0.7s;
+}
+
+.step:nth-child(2) {
+  animation-delay: 0.9s;
+}
+
+.step:nth-child(3) {
+  animation-delay: 1.1s;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+
+/* ==================================================
+   GAMBAR LANGKAH
+================================================== */
+
+.step img {
+  width: 125px;
+  height: 135px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  margin-right: 20px;
+
+  transition: transform 0.3s ease;
+}
+
+.step:hover img {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+
+/* ==================================================
+   KONTEN LANGKAH
+================================================== */
+
+.step-content {
+  flex: 1;
+
+  min-width: 0;
+
+  padding-top: 3px;
+}
+
+
+/* ==================================================
+   LABEL LANGKAH
+================================================== */
+
+.step-label {
+  display: inline-block;
+
+  padding: 8px 20px;
+
+  border-radius: 20px;
+
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ==================================================
+   WARNA LABEL
+================================================== */
+
+.step-one {
+  background: #ff7474;
+}
+
+.step-two {
+  background: #2d8eb8;
+}
+
+.step-three {
+  background: #5cad68;
+}
+
+
+/* ==================================================
+   TEKS LANGKAH
+================================================== */
+
+.step p {
+  margin: 12px 0 0 0;
+
+  font-family: Georgia, serif;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  color: #222;
+
+  max-width: 300px;
+}
+
+
+/* ==================================================
+   BUNGA
+================================================== */
+
+.intro-page > .flower {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 125px;
+  height: auto;
+
+  object-fit: contain;
+
+  opacity: 0.5;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  animation: flower-in 1s ease 1.2s both;
+}
+
+@keyframes flower-in {
+  from {
+    opacity: 0;
+    translate: 40px 40px;
+  }
+  to {
+    opacity: 0.5;
+    translate: 0 0;
+  }
+}
+
+
+/* ==================================================
+   HALAMAN 3 - PERTANYAAN
+================================================== */
+
+.quiz-page {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    to bottom,
+    #efe4e1 0%,
+    #e6d3d0 100%
+  );
+}
+
+/* Area scroll di bawah navbar (navbar tinggi 54px) */
+.quiz-scroll {
+  position: absolute;
+
+  top: 54px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  overflow-y: auto;
+
+  z-index: 1;
+}
+
+
+/* ==================================================
+   GELEMBUNG DEKORATIF
+================================================== */
+
+.bubble {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  opacity: 0.55;
+
+  animation: kz-float 9s ease-in-out infinite;
+}
+
+.bubble.b1 {
+  width: 140px;
+  height: 140px;
+
+  top: 90px;
+  left: -40px;
+
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e58c89);
+}
+
+.bubble.b2 {
+  width: 90px;
+  height: 90px;
+
+  top: 38%;
+  right: 4%;
+
+  background: radial-gradient(circle at 30% 30%, #ffffff, #8a6bbf);
+
+  animation-delay: -3s;
+}
+
+.bubble.b3 {
+  width: 110px;
+  height: 110px;
+
+  bottom: 8%;
+  left: 6%;
+
+  background: radial-gradient(circle at 30% 30%, #ffffff, #5cad68);
+
+  animation-delay: -5s;
+}
+
+.bubble.b4 {
+  width: 60px;
+  height: 60px;
+
+  bottom: 30%;
+  right: -15px;
+
+  background: radial-gradient(circle at 30% 30%, #ffffff, #f0a43a);
+
+  animation-delay: -7s;
+}
+
+@keyframes kz-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-22px) translateX(10px);
+  }
+}
+
+
+/* ==================================================
+   KUESIONER - WRAPPER
+================================================== */
+
+.kz-wrapper {
+  --kz-pink: #d9737a;
+  --kz-gray: #8a8a8a;
+  --kz-ready: #5b8f6b;
+  --kz-light: rgba(255, 255, 255, 0.55);
+  --kz-dark: rgba(227, 212, 208, 0.85);
+
+  position: relative;
+
+  max-width: 860px;
+
+  margin: 0 auto;
+  padding: 16px 16px 70px;
+
+  font-family: Georgia, serif;
+
+  color: #222;
+}
+
+
+/* ==================================================
+   KUESIONER - PROGRESS DINAMIS
+================================================== */
+
+.kz-progress {
+  position: sticky;
+
+  top: 8px;
+
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+
+  padding: 12px 16px;
+
+  border-radius: 16px;
+
+  margin-bottom: 20px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.kz-progress-main {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* Cincin persen */
+
+.kz-ring {
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 64px;
+  height: 64px;
+}
+
+.kz-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.kz-ring-bg {
+  fill: none;
+
+  stroke: #eadfdc;
+  stroke-width: 7;
+}
+
+.kz-ring-fg {
+  fill: none;
+
+  stroke: var(--kz-pink);
+  stroke-width: 7;
+  stroke-linecap: round;
+
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kz-ring-text {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  color: #333;
+}
+
+
+/* Info & bar */
+
+.kz-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+}
+
+.kz-msg {
+  font-weight: bold;
+
+  color: #444;
+
+  animation: kz-fade 0.4s ease;
+}
+
+.kz-count {
+  flex-shrink: 0;
+
+  color: #777;
+}
+
+.kz-bar {
+  position: relative;
+
+  height: 10px;
+
+  background: #e8e2e0;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.kz-bar-fill {
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    var(--kz-pink),
+    #f0a43a,
+    #5cad68,
+    var(--kz-pink)
+  );
+
+  background-size: 300% 100%;
+
+  animation: kz-shimmer 4s linear infinite;
+
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kz-tick {
+  position: absolute;
+
+  top: 0;
+
+  width: 2px;
+  height: 100%;
+
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes kz-shimmer {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -300% 0;
+  }
+}
+
+
+/* ==================================================
+   KUESIONER - CHIP DIMENSI (O C E A N)
+================================================== */
+
+.kz-steps {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.kz-chip {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 5px 7px 6px;
+
+  border-radius: 10px;
+
+  background: #f4eeec;
+
+  border: 1.5px solid transparent;
+
+  transition: all 0.3s;
+}
+
+.kz-chip-top {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  font-size: 11px;
+  font-weight: bold;
+
+  color: #888;
+}
+
+.kz-chip-count {
+  margin-left: auto;
+
+  font-weight: normal;
+}
+
+.kz-chip-track {
+  height: 5px;
+
+  background: #e3dad7;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+  margin-top: 4px;
+}
+
+.kz-chip-fill {
+  height: 100%;
+
+  background: var(--c);
+
+  transition: width 0.4s ease;
+}
+
+.kz-chip.active {
+  background: #fff;
+
+  border-color: var(--c);
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  transform: translateY(-2px);
+}
+
+.kz-chip.active .kz-chip-top {
+  color: var(--c);
+}
+
+.kz-chip.full .kz-chip-top {
+  color: var(--kz-ready);
+}
+
+
+/* ==================================================
+   KUESIONER - BADGE & JUDUL
+================================================== */
+
+.kz-badge {
+  display: inline-block;
+
+  padding: 6px 14px;
+
+  margin: 0 0 10px 4px;
+
+  border-radius: 999px;
+
+  background: var(--c);
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  animation: kz-fade 0.4s ease;
+}
+
+.kz-title {
+  margin: 0 0 14px 0;
+  padding: 0 4px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  animation: kz-fade 0.4s ease;
+}
+
+
+/* ==================================================
+   KUESIONER - DAFTAR SOAL
+================================================== */
+
+.kz-list {
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(120, 70, 70, 0.12);
+
+  animation: kz-fade 0.4s ease;
+}
+
+.kz-question {
+  position: relative;
+
+  padding: 22px 24px 26px;
+
+  transition: background 0.3s;
+}
+
+.kz-question.light {
+  background: var(--kz-light);
+}
+
+.kz-question.dark {
+  background: var(--kz-dark);
+}
+
+/* Garis di kiri muncul saat soal sudah dijawab */
+.kz-question::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 5px;
+  height: 0;
+
+  background: var(--c);
+
+  transition: height 0.4s ease;
+}
+
+.kz-question.answered::before {
+  height: 100%;
+}
+
+.kz-text {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin: 0 0 18px 0;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  line-height: 1.4;
+}
+
+.kz-num {
+  flex-shrink: 0;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #cbbdb9;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  transition: background 0.3s, transform 0.3s;
+}
+
+.kz-question.answered .kz-num {
+  background: var(--c);
+
+  transform: scale(1.1);
+}
+
+
+/* ==================================================
+   KUESIONER - OPSI JAWABAN
+================================================== */
+
+.kz-options {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 8px;
+}
+
+.kz-option {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 8px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  transition: background 0.2s, transform 0.2s;
+}
+
+.kz-option:hover {
+  background: rgba(255, 255, 255, 0.6);
+
+  transform: translateY(-1px);
+}
+
+.kz-option input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.kz-radio {
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 16px;
+  height: 16px;
+
+  border: 1.5px solid #555;
+  border-radius: 50%;
+
+  background: #fff;
+
+  transition: all 0.2s;
+}
+
+.kz-option:hover .kz-radio {
+  border-color: var(--c);
+}
+
+.kz-option input:focus-visible + .kz-radio {
+  outline: 2px solid var(--c);
+  outline-offset: 2px;
+}
+
+.kz-option.selected {
+  background: #fff;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kz-option.selected .kz-radio {
+  border-color: var(--c);
+  background: var(--c);
+
+  box-shadow: inset 0 0 0 3px #fff;
+
+  animation: kz-pop 0.3s ease;
+}
+
+/* Cincin gelombang saat dipilih */
+.kz-option.selected .kz-radio::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -2px;
+
+  border-radius: 50%;
+
+  border: 2px solid var(--c);
+
+  animation: kz-ping 0.6s ease-out forwards;
+}
+
+.kz-option.selected .kz-label {
+  font-weight: bold;
+}
+
+@keyframes kz-pop {
+  0% {
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes kz-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes kz-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ==================================================
+   KUESIONER - TOMBOL
+================================================== */
+
+.kz-actions {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 28px;
+}
+
+.kz-btn {
+  border: none;
+  border-radius: 999px;
+
+  padding: 10px 34px;
+
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: background 0.25s, transform 0.15s, opacity 0.25s;
+}
+
+.kz-btn-back {
+  background: var(--kz-pink);
+}
+
+.kz-btn-next {
+  background: var(--kz-gray);
+
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+.kz-btn-next.ready {
+  background: var(--kz-ready);
+
+  opacity: 1;
+
+  cursor: pointer;
+
+  animation: kz-glow 1.6s ease-in-out infinite;
+}
+
+.kz-btn-next.ready:hover,
+.kz-btn-back:hover {
+  transform: translateY(-1px);
+}
+
+@keyframes kz-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(91, 143, 107, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(91, 143, 107, 0);
+  }
+}
+
+
+/* ==================================================
+   KUESIONER - TOAST
+================================================== */
+
+.kz-toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 28px;
+
+  transform: translateX(-50%);
+
+  padding: 12px 24px;
+
+  border-radius: 999px;
+
+  background: #2f2f2f;
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  z-index: 200;
+
+  animation: kz-toast 2.3s ease forwards;
+}
+
+@keyframes kz-toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  12%, 85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+}
+
+
+/* ==================================================
+   HALAMAN 4 - HASIL
+================================================== */
+
+.result-page {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow-y: auto;
+
+  padding-top: 54px;
+
+  background: linear-gradient(
+    to bottom,
+    #eadbd7 0%,
+    #d99a9a 100%
+  );
+
+  font-family: Georgia, serif;
+}
+
+.rs-container {
+  max-width: 1000px;
+
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.rs-hero {
+  text-align: center;
+
+  margin-bottom: 26px;
+
+  animation: kz-fade 0.6s ease;
+}
+
+.rs-hero h1 {
+  margin: 0 0 8px 0;
+
+  font-size: 34px;
+
+  color: #222;
+}
+
+.rs-hero p {
+  margin: 0;
+
+  font-size: 15px;
+
+  color: #555;
+}
+
+
+/* ---------- Kartu umum ---------- */
+
+.rs-card {
+  background: rgba(255, 255, 255, 0.82);
+
+  border-radius: 22px;
+
+  padding: 22px;
+
+  box-shadow: 0 8px 24px rgba(120, 60, 60, 0.15);
+}
+
+.rs-top {
+  display: grid;
+
+  grid-template-columns: 1fr 1.15fr;
+
+  gap: 20px;
+
+  align-items: stretch;
+}
+
+.rs-radar-card h3 {
+  margin: 0 0 6px 0;
+
+  text-align: center;
+
+  font-size: 17px;
+
+  color: #333;
+}
+
+
+/* ---------- Radar ---------- */
+
+.rs-radar {
+  display: block;
+
+  width: 100%;
+  max-width: 360px;
+
+  margin: 0 auto;
+}
+
+.rs-ring {
+  fill: none;
+
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 1;
+}
+
+.rs-axis {
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 1;
+}
+
+.rs-poly {
+  fill: url(#radarFill);
+
+  stroke: #d65b7c;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+
+  transform-origin: 160px 160px;
+  transform: scale(0);
+
+  opacity: 0;
+
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s;
+}
+
+.rs-poly.show {
+  transform: scale(1);
+
+  opacity: 1;
+}
+
+.rs-dot {
+  opacity: 0;
+
+  stroke: #fff;
+  stroke-width: 2;
+
+  transition: opacity 0.5s;
+}
+
+.rs-dot.show {
+  opacity: 1;
+}
+
+.rs-lbl-key {
+  font-size: 16px;
+  font-weight: bold;
+
+  font-family: Georgia, serif;
+}
+
+.rs-lbl-pct {
+  font-size: 11px;
+
+  fill: #666;
+
+  font-family: Georgia, serif;
+}
+
+
+/* ---------- Kesimpulan ---------- */
+
+.rs-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-tag {
+  align-self: flex-start;
+
+  padding: 5px 14px;
+
+  border-radius: 999px;
+
+  background: #d65b7c;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.rs-summary h2 {
+  margin: 12px 0 10px 0;
+
+  font-size: 24px;
+
+  line-height: 1.25;
+
+  color: #222;
+}
+
+.rs-chips {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+}
+
+.rs-chip {
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  background: var(--c);
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.rs-para {
+  margin: 0 0 10px 0;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #333;
+}
+
+.rs-tip {
+  margin-top: auto;
+
+  padding: 12px 14px;
+
+  border-radius: 14px;
+
+  background: #fff3e0;
+
+  border-left: 4px solid #f0a43a;
+}
+
+.rs-tip strong {
+  font-size: 13px;
+}
+
+.rs-tip p {
+  margin: 4px 0 0 0;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: #444;
+}
+
+
+/* ---------- Rincian dimensi ---------- */
+
+.rs-section-title {
+  margin: 34px 0 14px 4px;
+
+  font-size: 20px;
+
+  color: #222;
+}
+
+.rs-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.rs-dim {
+  border-top: 5px solid var(--c);
+
+  opacity: 0;
+
+  animation: kz-fade 0.6s ease forwards;
+}
+
+.rs-dim:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.rs-dim-head {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 12px;
+}
+
+.rs-dim-name {
+  font-size: 18px;
+  font-weight: bold;
+
+  color: #222;
+
+  margin-bottom: 6px;
+}
+
+.rs-level {
+  display: inline-block;
+
+  padding: 4px 12px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  color: white;
+}
+
+.rs-level-rendah {
+  background: #8fa3ad;
+}
+
+.rs-level-sedang {
+  background: #e2a43a;
+}
+
+.rs-level-tinggi {
+  background: var(--c);
+}
+
+
+/* Gauge */
+
+.rs-gauge {
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 92px;
+  height: 92px;
+}
+
+.rs-gauge svg {
+  width: 100%;
+  height: 100%;
+}
+
+.rs-gauge-bg {
+  fill: none;
+
+  stroke: #eadfdc;
+  stroke-width: 9;
+}
+
+.rs-gauge-fg {
+  fill: none;
+
+  stroke-width: 9;
+  stroke-linecap: round;
+
+  transition: stroke-dashoffset 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rs-gauge-center {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 1px;
+}
+
+.rs-gauge-center strong {
+  font-size: 22px;
+
+  color: #222;
+}
+
+.rs-gauge-center small {
+  font-size: 11px;
+
+  color: #777;
+
+  margin-top: 4px;
+}
+
+
+/* Teks keterangan */
+
+.rs-desc {
+  margin: 0 0 12px 0;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #333;
+}
+
+.rs-hl {
+  margin-bottom: 12px;
+
+  padding: 10px 12px;
+
+  border-radius: 12px;
+
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.rs-hl-title {
+  margin-bottom: 6px;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  color: var(--c);
+}
+
+.rs-hl ul {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.rs-hl li {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  padding: 6px 0;
+
+  font-size: 13px;
+
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+.rs-hl li:last-child {
+  border-bottom: none;
+}
+
+.rs-hl-text {
+  color: #444;
+
+  line-height: 1.4;
+}
+
+.rs-hl-ans {
+  align-self: flex-start;
+
+  padding: 2px 10px;
+
+  border-radius: 999px;
+
+  background: var(--c);
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.rs-dim-tip {
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: #555;
+}
+
+.rs-dim-tip strong {
+  color: var(--c);
+}
+
+.rs-disclaimer {
+  margin: 30px auto 0;
+
+  max-width: 640px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: #6b4a4a;
+}
+
+
+/* ---------- Tombol hasil ---------- */
+
+.result-actions {
+  display: flex;
+  justify-content: center;
+
+  gap: 14px;
+
+  margin-top: 26px;
+}
+
+.result-actions button {
+  padding: 10px 30px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #d65b7c;
+  color: white;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.result-actions button:hover {
+  background: #c84d6e;
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 1000px) {
+
+  .navbar {
+    padding: 0 25px;
+  }
+
+  .navbar-title {
+    font-size: 18px;
+  }
+
+  .navbar-subtitle {
+    font-size: 9px;
+  }
+
+  .intro-title {
+    font-size: 40px;
+  }
+
+  .logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .steps {
+    left: 5%;
+    right: 5%;
+
+    gap: 25px;
+  }
+
+  .step img {
+    width: 95px;
+    height: 105px;
+
+    margin-right: 12px;
+  }
+
+  .step p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 860px) {
+
+  .rs-top {
+    grid-template-columns: 1fr;
+  }
+
+  .rs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+
+  /* Menu berubah jadi dropdown */
+  .navbar-burger {
+    display: flex;
+  }
+
+  .navbar-menu {
+    position: absolute;
+
+    top: 54px;
+    left: 0;
+    right: 0;
+
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 4px;
+
+    padding: 10px 16px 14px;
+
+    background: #d87878;
+
+    box-shadow: 0 8px 16px rgba(120, 50, 50, 0.2);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+
+  .navbar-menu.open {
+    opacity: 1;
+    visibility: visible;
+
+    transform: none;
+  }
+
+  .nav-link {
+    padding: 11px 16px;
+
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .kz-options {
+    grid-template-columns: 1fr 1fr;
+
+    row-gap: 8px;
+  }
+
+  .kz-question {
+    padding: 18px 16px 20px;
+  }
+
+  .kz-progress {
+    padding: 10px 12px;
+
+    gap: 10px;
+  }
+
+  .kz-ring {
+    width: 50px;
+    height: 50px;
+  }
+
+  .kz-ring-text {
+    font-size: 11px;
+  }
+
+  .kz-chip-count {
+    display: none;
+  }
+
+  .rs-hero h1 {
+    font-size: 26px;
+  }
+
+  .modal-card {
+    padding: 22px 18px 18px;
+  }
+}
+
+
+/* ==================================================
+   TAMPILAN HP (layar maks. 700px)
+   Background halaman 1 otomatis memakai
+   background_android.png (diatur di App.jsx).
+   Kalau mau ubah batas "HP", ubah angka 700px di sini
+   DAN di atribut media pada <source> di App.jsx.
+================================================== */
+
+@media (max-width: 700px) {
+
+  /* Tinggi layar HP yang akurat (tidak terpotong address bar) */
+  .home,
+  .intro-page,
+  .quiz-page,
+  .result-page {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+
+  /* ---------- HALAMAN 1 ---------- */
+
+  .home {
+    /* ATUR POSISI TOMBOL MULAI DI SINI.
+       Makin besar angkanya, makin ke bawah. */
+    --hp-btn-top: 78%;
+  }
+
+  /* Zoom dimatikan supaya posisi tombol tetap pas dengan gambar */
+  .background {
+    animation: none;
+  }
+
+  /* Tombol Mulai di tengah layar (tanpa transform,
+     jadi tidak bentrok dengan efek hover) */
+  .start-button {
+    top: var(--hp-btn-top);
+
+    left: 0;
+    right: 0;
+
+    width: fit-content;
+
+    margin: 0 auto;
+
+    padding: 12px 42px;
+
+    font-size: 16px;
+  }
+
+
+  /* ---------- HALAMAN 2 ---------- */
+
+  .intro-page {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .back-button {
+    top: 64px;
+    left: 18px;
+  }
+
+  .logo {
+    top: 46px;
+
+    width: 84px;
+    height: 84px;
+  }
+
+  .intro-title {
+    top: 138px;
+
+    font-size: 30px;
+  }
+
+  .next-button {
+    top: 186px;
+
+    width: 150px;
+    height: 40px;
+  }
+
+  /* Tiga langkah ditumpuk ke bawah dan bisa di-scroll */
+  .steps {
+    position: relative;
+
+    top: auto;
+    left: auto;
+    right: auto;
+
+    margin: 252px 6% 0;
+
+    flex-direction: column;
+
+    gap: 20px;
+  }
+
+  /* Ruang kosong di bawah supaya langkah terakhir tidak mepet */
+  .steps::after {
+    content: "";
+
+    flex-shrink: 0;
+
+    height: 30px;
+  }
+
+  .step {
+    width: 100%;
+  }
+
+  .step img {
+    width: 84px;
+    height: 94px;
+
+    margin-right: 12px;
+  }
+
+  .step p {
+    font-size: 14px;
+
+    max-width: none;
+  }
+
+  .intro-page > .flower {
+    width: 80px;
+  }
+}
+
+
+/* ==================================================
+   AKSESIBILITAS: kurangi gerakan
+   (untuk pengguna yang mematikan animasi di perangkatnya)
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
